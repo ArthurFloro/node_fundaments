@@ -19,8 +19,16 @@ export class Database {
     fs.writeFile(databasePath, JSON.stringify(this.#database));
   }
 
-  select(table) {
+  select(table, search) {
     const data = this.#database[table] ?? []; // se não existir retorna um array vazio
+
+    if (search) {
+      data = data.filter((row) => {
+        return Object.entries(search).some(([key, value]) => {
+          return row[key].toLowerCase().includes[value.toLowerCase()];
+        });
+      });
+    }
 
     return data;
   }
